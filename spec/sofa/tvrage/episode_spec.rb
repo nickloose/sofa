@@ -21,15 +21,25 @@ describe Episode do
     end
   end
 
-  it "should get episode info" do
-    id='10' 
-    season='1' 
-    episode='04'
+  describe ".info" do
+    it "should get episode info" do
+      id='10' 
+      season='1' 
+      episode='04'
 
-    @xml = File.read("spec/fixtures/tvrage/episode_info.xml")
-    FakeWeb.register_uri(:get, "http://services.tvrage.com/feeds/episodeinfo.php?sid=#{id}&ep=#{season}x#{episode}", :body => @xml)
+      @xml = File.read("spec/fixtures/tvrage/episode_info.xml")
+      FakeWeb.register_uri(:get, "http://services.tvrage.com/feeds/episodeinfo.php?sid=#{id}&ep=#{season}x#{episode}", :body => @xml)
 
-    Episode.info(id, season, episode).should == Crack::XML.parse(@xml)["show"]
+      Episode.info(id, season, episode).should == Crack::XML.parse(@xml)["show"]
+    end
+
+    it "with personal key" do
+      key = "86mwHKnZkhHVeZIxUsGj"
+      Episode.key = key
+
+      Episode.base_uri.should == "http://services.tvrage.com/myfeeds"
+      Episode.default_params["key"].should == key
+    end
   end
 
   it "should have season number" do

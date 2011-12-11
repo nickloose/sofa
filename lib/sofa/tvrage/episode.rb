@@ -8,7 +8,7 @@ module Sofa
 
       include HTTParty
       format :xml
-      base_uri 'services.tvrage.com'
+      base_uri 'http://services.tvrage.com/feeds'
 
       class << self
         # Gets the info for a Episode.
@@ -17,8 +17,14 @@ module Sofa
         # @return [Hash] The parsed XML
         # @see http://services.tvrage.com/feeds/episodeinfo.php?sid=2930&ep=2x04
         def info(sid, season_no, ep_num)
-          xml = get('/feeds/episodeinfo.php', :query => {:sid => sid, :ep => "#{season_no}x#{ep_num}"})
+          xml = get('/episodeinfo.php', :query => {:sid => sid, :ep => "#{season_no}x#{ep_num}"})
           xml["show"]
+        end
+
+        # use personal API 
+        def key=(key)
+          base_uri 'http://services.tvrage.com/myfeeds'
+          default_params({"key" => key})
         end
       end
 
