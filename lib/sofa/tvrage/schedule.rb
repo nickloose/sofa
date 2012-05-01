@@ -15,8 +15,8 @@ module Sofa
         # @param country [String] The country to query in (US, UK, NL)
         # @return [Hash] The parsed XML of schedule information
         # @see http://services.tvrage.com/feeds/fullschedule.php?country=US US's Full Schedule
-        def full(country)
-          xml = get("/fullschedule.php", :query => {:country => country})
+        def full(country, format_24=false)
+          xml = get("/fullschedule.php", :query => {:country => country, :"24_format" => (format_24 ? 0 : 1)})
           xml["schedule"]
         end
       end
