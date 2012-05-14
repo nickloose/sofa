@@ -86,13 +86,13 @@ module Sofa
         :status         => nil,
         :classification => nil,
         :runtime        => :run_time,
-        :network        => nil,
         :airtime        => :air_time,
         :airday         => :air_day,
         :timezone       => :time_zone
       )
       maps(:genres => nil) { |value| value["genre"] }
       maps(:akas => nil) { |value| value["aka"] }
+      maps(:network => nil) { |value| value["__content__"] }
 
       # Maps :Episodelist to :season_list
       # @see Sofa::Mapping
