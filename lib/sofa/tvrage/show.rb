@@ -54,6 +54,19 @@ module Sofa
           id = show_info.split("\n").first.gsub(%r{^Show ID@}, '').strip
           Show.new(id, options)
         end        
+
+        def search(name, options = {})
+          results = Array.new
+
+          xml = get('/feeds/full_search.php', :query => {:show => name})
+
+          xml["Results"]["show"].each do |result|
+              s = Show.new(result["showid"], options)
+              results.push(s)
+          end
+
+          return results
+        end
       end
 
       include Mapping
